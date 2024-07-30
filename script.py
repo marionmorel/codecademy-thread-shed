@@ -107,3 +107,102 @@ green&white;,;09/15/17,   Gail Phelps   ;,;$30.52
 
 #------------------------------------------------
 # Start coding below!
+
+#------------------------------------------------
+# Break up `daily_sales` in easy to understand lists `customers`, `sales`, and `thread_sold`
+#------------------------------------------------
+
+# Replace all instances of ';,;' in daily_sales
+daily_sales_replaced = daily_sales.replace(';,;', '-')
+
+# Split the string into a list of each individual transactions
+daily_transactions = daily_sales_replaced.split(',')
+
+# print(daily_transactions)
+
+# Define empty list
+daily_transactions_split = [ ]
+
+# Iterate through daily_transactions to split around '-'
+for transaction in daily_transactions:
+    daily_transactions_split.append(transaction.split('-'))
+
+# print(daily_transactions_split)
+
+# Define empty list
+transactions_clean = [ ]
+
+# Iterate through daily_transactions_split to strip off any whitespace
+for transaction in daily_transactions_split:
+    transactions_list = [ ]
+    for datapoint in transaction:
+        transactions_list.append(datapoint.replace('\n', '').strip(' '))
+    transactions_clean.append(transactions_list)
+
+# print(transactions_clean)
+
+# Create three empty lists to collect the individual data points for each transaction
+customers = [ ]
+sales = [ ]
+thread_sold = [ ]
+
+# Iterate through transactions_clean to append each elements to the right list
+for transaction in transactions_clean:
+    customers.append(transaction[0])
+    sales.append(transaction[1])
+    thread_sold.append(transaction[2])
+
+# print(customers)
+# print(sales)
+# print(thread_sold)
+
+#------------------------------------------------
+# Determine the total value of the days sales
+#------------------------------------------------
+
+# Define total_sales and initiate it to 0
+total_sales = 0
+
+# Iterate through sales and for each item: strip off the $, set it equal to a float and add it to total_sales
+for item in sales:
+    total_sales = total_sales + float(item.strip('$'))
+
+# print(total_sales)
+
+#------------------------------------------------
+# How much thread of any specific color was sold?
+#------------------------------------------------
+
+# print(thread_sold)
+
+# Define empty list
+thread_sold_split = [ ]
+
+# Iterate thought thread_sold and for each item, check if its a single color or multiple colors, append single colors to thread_sold_split, split string around '&' if multiple colors and append each color to thread_sold_split
+single_color_thread = [ ]
+for thread in thread_sold:
+    single_color_thread.append(thread.split('&'))
+
+for thread in single_color_thread:
+    for i in range(0, len(thread)):
+        thread_sold_split.append(thread[i])
+
+# print(thread_sold_split)
+
+# Define function to count the number of times the item is equal to the argument color
+def color_count(color):
+    counter = 0
+    for i in range (0, len(thread_sold_split) - 1):
+        if thread_sold_split[i] == color:
+            counter += 1
+    return counter
+
+# Test the function
+# print(color_count('white'))
+
+# Define a list that stores all the colored threads that Thread Shed offers
+colors = ['red', 'yellow', 'green', 'white', 'black', 'blue', 'purple']
+
+# Iterate through the list and print a sentence that says how many threads of each color were sold today
+for color in colors:
+    print('{} {} threads were sold today.'.format(color_count(color), color))
